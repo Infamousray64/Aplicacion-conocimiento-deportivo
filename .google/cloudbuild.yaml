@@ -1,0 +1,20 @@
+steps:
+# Install
+- name: node
+  entrypoint: yarn
+  args: ['install']
+# Lint
+- name: 'gcr.io/cloud-builders/yarn'
+  args: ['run', 'lint']
+# Format
+- name: 'gcr.io/cloud-builders/yarn'
+  args: ['run', 'format']
+# Build
+- name: 'gcr.io/cloud-builders/yarn'
+  args: ['run', 'build']
+# Deploy  
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['-m', 'rsync', '-r', '-c', '-d', 'build/', 'gs://ivotalents-bot-poc']
+
+options:
+  logging: CLOUD_LOGGING_ONLY
